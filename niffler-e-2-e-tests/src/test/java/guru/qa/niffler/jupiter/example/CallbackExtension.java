@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.example;
 
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -20,7 +20,7 @@ public class CallbackExtension implements
 
     @Override
     public void beforeAll(ExtensionContext context) {
-//        context.getRequiredTestClass(); // class guru.qa.niffler.tests.CallbackExampleSimpleTest
+//        context.getRequiredTestClass(); // class guru.qa.niffler.tests.simpletestsexample.CallbackExampleSimpleTest
         System.out.println("BeforeAll Callback!");
     }
 
@@ -31,10 +31,10 @@ public class CallbackExtension implements
 
     @Override
     public void beforeEach(ExtensionContext context) {
-//        context.getRequiredTestClass(); // class guru.qa.niffler.tests.CallbackExampleSimpleTest
-//        context.getRequiredTestInstance(); // guru.qa.niffler.tests.CallbackExampleSimpleTest@52954945
-//        context.getRequiredTestMethod(); // void guru.qa.niffler.tests.CallbackExampleSimpleTest.test2()
-//        context.getParent().get().getRequiredTestClass(); // class guru.qa.niffler.tests.CallbackExampleSimpleTest
+//        context.getRequiredTestClass(); // class guru.qa.niffler.tests.simpletestsexample.CallbackExampleSimpleTest
+//        context.getRequiredTestInstance(); // guru.qa.niffler.tests.simpletestsexample.CallbackExampleSimpleTest@52954945
+//        context.getRequiredTestMethod(); // void guru.qa.niffler.tests.simpletestsexample.CallbackExampleSimpleTest.test2()
+//        context.getParent().get().getRequiredTestClass(); // class guru.qa.niffler.tests.simpletestsexample.CallbackExampleSimpleTest
 //        context.getRoot(); // context for test run
         System.out.println("   BeforeEach Callback!");
     }

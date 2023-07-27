@@ -1,4 +1,6 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.example;
+
+import guru.qa.niffler.jupiter.extension.SuiteExtension;
 
 public class ExampleSuiteExtension implements SuiteExtension {
     @Override

@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.annotation;
 
 import guru.qa.niffler.model.CurrencyValues;
 

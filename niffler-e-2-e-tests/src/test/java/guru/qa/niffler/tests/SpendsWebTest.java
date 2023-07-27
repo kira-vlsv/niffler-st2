@@ -3,12 +3,13 @@ package guru.qa.niffler.tests;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import guru.qa.niffler.jupiter.GenerateCategory;
-import guru.qa.niffler.jupiter.GenerateCategoryExtension;
-import guru.qa.niffler.jupiter.GenerateSpend;
-import guru.qa.niffler.jupiter.GenerateSpendExtension;
+import guru.qa.niffler.jupiter.annotation.GenerateCategory;
+import guru.qa.niffler.jupiter.extension.GenerateCategoryExtension;
+import guru.qa.niffler.jupiter.annotation.GenerateSpend;
+import guru.qa.niffler.jupiter.extension.GenerateSpendExtension;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
+import io.qameta.allure.AllureId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,8 +19,8 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-@ExtendWith({GenerateSpendExtension.class, GenerateCategoryExtension.class})
-public class SpendsWebTest {
+@ExtendWith(GenerateCategoryExtension.class)
+public class SpendsWebTest extends BaseWebTest {
 
     static  {
         Configuration.browserSize = "1920x1080";
@@ -27,7 +28,7 @@ public class SpendsWebTest {
 
     @BeforeEach
     void doLogin() {
-        Selenide.open("http://localhost:3000/main");
+        Selenide.open("http://localhost:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue("user1");
         $("input[name='password']").setValue("1234");
@@ -44,6 +45,7 @@ public class SpendsWebTest {
             currency = CurrencyValues.RUB,
             amount = 673948.90,
             category = "NewCategory")
+    @AllureId("101")
     @Test
     void spendShouldBeDeletedByActionInTable(SpendJson spend) {
         $(".spendings-table tbody").shouldBe(visible)

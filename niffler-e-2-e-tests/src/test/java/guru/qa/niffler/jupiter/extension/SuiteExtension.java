@@ -1,11 +1,9 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.extension;
 
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-
-import java.util.function.Function;
 
 public interface SuiteExtension extends BeforeAllCallback {
 
