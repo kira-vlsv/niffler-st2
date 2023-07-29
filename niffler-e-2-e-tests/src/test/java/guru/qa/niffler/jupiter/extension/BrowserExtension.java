@@ -16,7 +16,7 @@ public class BrowserExtension implements TestExecutionExceptionHandler, AfterEac
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
         if (WebDriverRunner.hasWebDriverStarted()) {
-            Allure.addAttachment("Screen on fail",
+            Allure.addAttachment("Screenshot on fail",
                     new ByteArrayInputStream(((TakesScreenshot) WebDriverRunner.getWebDriver())
                             .getScreenshotAs(OutputType.BYTES)));
         }

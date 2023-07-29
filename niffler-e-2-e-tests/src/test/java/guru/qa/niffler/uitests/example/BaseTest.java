@@ -1,4 +1,4 @@
-package guru.qa.niffler.tests.example;
+package guru.qa.niffler.uitests.example;
 
 import guru.qa.niffler.jupiter.example.ExampleSuiteExtension;
 import org.junit.jupiter.api.extension.ExtendWith;

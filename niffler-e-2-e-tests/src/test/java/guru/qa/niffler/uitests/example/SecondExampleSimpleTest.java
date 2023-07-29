@@ -1,4 +1,4 @@
-package guru.qa.niffler.tests.example;
+package guru.qa.niffler.uitests.example;
 
 import guru.qa.niffler.jupiter.example.CallbackExtension;
 import org.junit.jupiter.api.AfterAll;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @Disabled
 @ExtendWith(CallbackExtension.class)
-public class CallbackExampleSimpleTest extends BaseTest {
+public class SecondExampleSimpleTest extends BaseTest {
 
     @BeforeAll
     static void beforeAll() {
@@ -34,13 +34,13 @@ public class CallbackExampleSimpleTest extends BaseTest {
     }
 
     @Test
-    void test1() throws Exception {
-        System.out.println("        Test1");
+    void test3() throws Exception {
+        System.out.println("        Test3");
 //        throw new Exception();
     }
 
     @Test
-    void test2() {
-        System.out.println("        Test2");
+    void test4() {
+        System.out.println("        Test4");
     }
 }

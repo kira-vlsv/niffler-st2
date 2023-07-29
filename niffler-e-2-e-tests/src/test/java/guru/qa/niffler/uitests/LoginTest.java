@@ -1,11 +1,9 @@
-package guru.qa.niffler.tests;
+package guru.qa.niffler.uitests;
 
 import com.codeborne.selenide.Selenide;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.qa.niffler.jupiter.annotation.ClassPathUser;
 import guru.qa.niffler.model.UserJson;
 import io.qameta.allure.AllureId;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

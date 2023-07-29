@@ -1,4 +1,4 @@
-package guru.qa.niffler.tests;
+package guru.qa.niffler.uitests;
 
 import guru.qa.niffler.jupiter.annotation.WebTest;
 

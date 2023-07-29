@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,9 +47,14 @@ public class UserQueueExtension implements
     public void beforeEach(ExtensionContext context) throws Exception {
         final String testId = getTestId(context);
         Parameter[] testParameters = context.getRequiredTestMethod().getParameters();
-        for (Parameter testParameter : testParameters) {
-            User desiredUser = testParameter.getAnnotation(User.class);
-            if (desiredUser != null) {
+        Parameter[] userAnnotation = Arrays.asList(testParameters)
+                .stream()
+                .filter(tp -> tp.isAnnotationPresent(User.class))
+                .toArray(Parameter[]::new);
+        if (Objects.nonNull(userAnnotation)) {
+            Map<User.UserType, Map<String, UserJson>> users = new HashMap<>();
+            for (Parameter parameter : userAnnotation) {
+                User desiredUser = parameter.getAnnotation(User.class);
                 User.UserType userType = desiredUser.userType();
                 UserJson user = null;
                 while (user == null) {
@@ -57,8 +64,10 @@ public class UserQueueExtension implements
                         case INVITATION_SENT -> user = USERS_INVITATION_SENT_QUEUE.poll();
                     }
                 }
-                context.getStore(USER_EXTENSION_NAMESPACE).put(testId, Map.of(userType, user));
+                users.putIfAbsent(userType, new HashMap<>());
+                users.get(userType).put(parameter.getName(), user);
             }
+            context.getStore(USER_EXTENSION_NAMESPACE).put(testId, users);
         }
     }
 
@@ -66,13 +75,25 @@ public class UserQueueExtension implements
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
         final String testId = getTestId(context);
-        Map<User.UserType, UserJson> user = (Map<User.UserType, UserJson>) context.getStore(USER_EXTENSION_NAMESPACE)
-                .get(testId);
-        User.UserType userType = user.keySet().iterator().next();
-        switch (userType) {
-            case WITH_FRIENDS -> USERS_WITH_FRIENDS_QUEUE.add(user.get(userType));
-            case INVITATION_RECEIVED -> USERS_INVITATION_RECEIVED_QUEUE.add(user.get(userType));
-            case INVITATION_SENT -> USERS_INVITATION_SENT_QUEUE.add(user.get(userType));
+        if (Objects.nonNull(context.getStore(USER_EXTENSION_NAMESPACE).get(testId))) {
+            Map<User.UserType, Map<String, UserJson>> users = context.getStore(USER_EXTENSION_NAMESPACE)
+                    .get(testId, Map.class);
+            for (User.UserType userType : users.keySet()) {
+                switch (userType) {
+                    case WITH_FRIENDS :
+                        for (UserJson user : users.get(userType).values()) {
+                            USERS_WITH_FRIENDS_QUEUE.add(user);
+                        }
+                    case INVITATION_RECEIVED :
+                        for (UserJson user : users.get(userType).values()) {
+                            USERS_INVITATION_RECEIVED_QUEUE.add(user);
+                        }
+                    case INVITATION_SENT :
+                        for (UserJson user : users.get(userType).values()) {
+                            USERS_INVITATION_SENT_QUEUE.add(user);
+                        }
+                }
+            }
         }
     }
 
@@ -80,16 +101,17 @@ public class UserQueueExtension implements
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         return
                 parameterContext.getParameter().isAnnotationPresent(User.class) &&
-                parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
+                        parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);
-        Map<User.UserType, UserJson> user = (Map<User.UserType, UserJson>) extensionContext.getStore(USER_EXTENSION_NAMESPACE)
-                .get(testId);
-        return user.values().iterator().next();
+        User.UserType userType = parameterContext.getParameter().getAnnotation(User.class).userType();
+        Map<User.UserType, Map<String, UserJson>> users = extensionContext.getStore(USER_EXTENSION_NAMESPACE)
+                .get(testId, Map.class);
+        return users.get(userType).get(parameterContext.getParameter().getName());
     }
 
     private String getTestId(ExtensionContext extensionContext) {
