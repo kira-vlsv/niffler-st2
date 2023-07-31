@@ -20,17 +20,17 @@ public class FriendsWebTest extends BaseWebTest {
     void friendsShouldBeVisible(@User(userType = WITH_FRIENDS) UserJson user1,
                                 @User(userType = INVITATION_SENT) UserJson user2,
                                 @User(userType = INVITATION_SENT) UserJson user3) {
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user1.getUsername());
         $("input[name='password']").setValue(user1.getPassword());
 
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user2.getUsername());
         $("input[name='password']").setValue(user2.getPassword());
 
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user3.getUsername());
         $("input[name='password']").setValue(user3.getPassword());
@@ -44,17 +44,17 @@ public class FriendsWebTest extends BaseWebTest {
     void friendsShouldBeVisible01(@User(userType = WITH_FRIENDS) UserJson user1,
                                 @User(userType = INVITATION_SENT) UserJson user2,
                                   @User(userType = WITH_FRIENDS) UserJson user3) {
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user1.getUsername());
         $("input[name='password']").setValue(user1.getPassword());
 
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user2.getUsername());
         $("input[name='password']").setValue(user2.getPassword());
 
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user3.getUsername());
         $("input[name='password']").setValue(user3.getPassword());
@@ -67,12 +67,12 @@ public class FriendsWebTest extends BaseWebTest {
     @Test
     void friendsShouldBeVisible02(@User(userType = WITH_FRIENDS) UserJson user1,
                                 @User(userType = INVITATION_SENT) UserJson user2) {
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user1.getUsername());
         $("input[name='password']").setValue(user1.getPassword());
 
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user2.getUsername());
         $("input[name='password']").setValue(user2.getPassword());

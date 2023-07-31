@@ -17,13 +17,13 @@ public class LoginTest extends BaseWebTest {
 
     @ValueSource(strings = {
             "testdata/user1.json",
-            "testdata/user2.json"
+            "testdata/user3.json"
     })
     @AllureId("103")
     @ParameterizedTest
     void loginTest(@ClassPathUser UserJson user) throws IOException {
 
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue(user.getUsername());
         $("input[name='password']").setValue(user.getPassword());

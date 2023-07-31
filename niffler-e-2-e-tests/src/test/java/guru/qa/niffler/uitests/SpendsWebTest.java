@@ -27,7 +27,7 @@ public class SpendsWebTest extends BaseWebTest {
 
     @BeforeEach
     void doLogin() {
-        Selenide.open("http://localhost:3000");
+        Selenide.open("http://127.0.0.1:3000");
         $("a[href*='redirect']").click();
         $("input[name='username']").setValue("user1");
         $("input[name='password']").setValue("1234");
