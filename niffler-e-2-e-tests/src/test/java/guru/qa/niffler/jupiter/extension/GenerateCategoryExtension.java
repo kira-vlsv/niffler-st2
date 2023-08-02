@@ -1,31 +1,20 @@
 package guru.qa.niffler.jupiter.extension;
 
-import guru.qa.niffler.api.SpendService;
+import guru.qa.niffler.api.client.SpendRestClient;
 import guru.qa.niffler.jupiter.annotation.GenerateCategory;
 import guru.qa.niffler.model.CategoryJson;
-import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class GenerateCategoryExtension implements ParameterResolver, BeforeEachCallback {
 
     public static ExtensionContext.Namespace CATEGORY_NAMESPACE = ExtensionContext.Namespace
             .create(GenerateCategoryExtension.class);
 
-    public static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
-
-    public final Retrofit retrofit = new Retrofit.Builder()
-            .client(httpClient)
-            .baseUrl("http://127.0.0.1:8093")
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build();
-
-    private final SpendService spendService = retrofit.create(SpendService.class);
+    private final SpendRestClient spendRestClient = new SpendRestClient();
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
@@ -34,10 +23,9 @@ public class GenerateCategoryExtension implements ParameterResolver, BeforeEachC
             CategoryJson category = new CategoryJson();
             category.setCategory(annotation.category());
             category.setUsername(annotation.username());
-            CategoryJson created = spendService.addCategory(category).execute().body();
+            CategoryJson created = spendRestClient.addCategory(category);
             context.getStore(CATEGORY_NAMESPACE).put(context.getRequiredTestMethod(), created);
         }
-
     }
 
     @Override

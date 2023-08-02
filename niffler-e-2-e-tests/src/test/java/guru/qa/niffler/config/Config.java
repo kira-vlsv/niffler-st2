@@ -9,8 +9,18 @@ public interface Config {
         return new LocalConfig();
     }
     String getDBHost();
+
     int getDBPort();
+
     String getDBLogin();
+
     String getDBPassword();
 
+    String getSpendServiceBaseUrl();
+
+    String getUserServiceBaseUrl();
+
+    String getFrontUrl();
+
+    String getAuthUrl();
 }

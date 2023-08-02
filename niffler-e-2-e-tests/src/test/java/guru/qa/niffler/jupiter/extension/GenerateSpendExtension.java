@@ -1,16 +1,13 @@
 package guru.qa.niffler.jupiter.extension;
 
-import guru.qa.niffler.api.SpendService;
+import guru.qa.niffler.api.client.SpendRestClient;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.model.SpendJson;
-import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.util.Date;
 
@@ -19,15 +16,7 @@ public class GenerateSpendExtension implements ParameterResolver, BeforeEachCall
     public static ExtensionContext.Namespace SPEND_NAMESPACE = ExtensionContext.Namespace
             .create(GenerateSpendExtension.class);
 
-    public static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
-
-    public final Retrofit retrofit = new Retrofit.Builder()
-            .client(httpClient)
-            .baseUrl("http://127.0.0.1:8093")
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build();
-
-    private final SpendService spendService = retrofit.create(SpendService.class);
+    private final SpendRestClient spendRestClient = new SpendRestClient();
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
@@ -40,7 +29,7 @@ public class GenerateSpendExtension implements ParameterResolver, BeforeEachCall
             spend.setSpendDate(new Date());
             spend.setAmount(annotation.amount());
             spend.setCurrency(annotation.currency());
-            SpendJson created = spendService.addSpend(spend).execute().body();
+            SpendJson created = spendRestClient.addSpend(spend);
             context.getStore(SPEND_NAMESPACE).put(context.getRequiredTestMethod(), created);
         }
     }

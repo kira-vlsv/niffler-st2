@@ -20,4 +20,24 @@ public class DockerConfig implements Config {
     public String getDBPassword() {
         return "secret";
     }
+
+    @Override
+    public String getSpendServiceBaseUrl() {
+        return "niffler-spend";
+    }
+
+    @Override
+    public String getUserServiceBaseUrl() {
+        return "niffler-userdata";
+    }
+
+    @Override
+    public String getFrontUrl() {
+        return "http://niffler-frontend:3000/";
+    }
+
+    @Override
+    public String getAuthUrl() {
+        return "http://niffler-auth:9000/";
+    }
 }
