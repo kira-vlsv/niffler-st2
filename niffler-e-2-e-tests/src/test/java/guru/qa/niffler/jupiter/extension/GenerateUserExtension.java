@@ -62,7 +62,7 @@ public class GenerateUserExtension implements ParameterResolver, BeforeEachCallb
     public void afterEach(ExtensionContext context) {
         List<UserEntity> list = context.getStore(GENERATED_USER_NAMESPACE).get(context.getRequiredTestMethod(), List.class);
         for(UserEntity user : list){
-            nifflerUsersDAO.deleteUser(user.getUsername());
+            nifflerUsersDAO.deleteUser(user);
         }
     }
 

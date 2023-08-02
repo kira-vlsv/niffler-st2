@@ -2,6 +2,7 @@ package guru.qa.niffler.db.dao;
 
 import guru.qa.niffler.db.DataSourceProvider;
 import guru.qa.niffler.db.ServiceDB;
+import guru.qa.niffler.db.entity.AuthorityEntity;
 import guru.qa.niffler.db.entity.UserEntity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
+import java.util.UUID;
 
 public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
 
@@ -24,38 +25,52 @@ public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
 
         int executeUpdate;
 
-        try (Connection connection = ds.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO users " +
-                     "(username, password, enabled, account_non_expired, account_non_locked, credentials_non_expired) " +
-                     "VALUES (?, ?, ?, ?, ?, ?)")) {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, passwordEncoder.encode(user.getPassword()));
-            statement.setBoolean(3, user.getEnabled());
-            statement.setBoolean(4, user.getAccountNonExpired());
-            statement.setBoolean(5, user.getAccountNonLocked());
-            statement.setBoolean(6, user.getCredentialsNonExpired());
-            executeUpdate = statement.executeUpdate();
+        try (Connection connection = ds.getConnection()) {
+
+            connection.setAutoCommit(false); // turn off transactions commit one by one
+
+            try (PreparedStatement userStatement = connection.prepareStatement("INSERT INTO users " +
+                    "(username, password, enabled, account_non_expired, account_non_locked, credentials_non_expired) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                 PreparedStatement authorityStatement = connection.prepareStatement(
+                         "INSERT INTO authorities (user_id, authority) VALUES (?, ?)")) {
+                userStatement.setString(1, user.getUsername());
+                userStatement.setString(2, passwordEncoder.encode(user.getPassword()));
+                userStatement.setBoolean(3, user.getEnabled());
+                userStatement.setBoolean(4, user.getAccountNonExpired());
+                userStatement.setBoolean(5, user.getAccountNonLocked());
+                userStatement.setBoolean(6, user.getCredentialsNonExpired());
+                executeUpdate = userStatement.executeUpdate();
+
+                final UUID userId;
+
+                try (ResultSet generatedKeys = userStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        userId = UUID.fromString(generatedKeys.getString(1));
+                        user.setId(userId);
+                    } else {
+                        throw new SQLException("User has not been created, no ID present");
+                    }
+                }
+
+                for (AuthorityEntity authority : user.getAuthorities()) {
+                    authorityStatement.setObject(1, userId);
+                    authorityStatement.setString(2, authority.getAuthority().name());
+                    authorityStatement.addBatch();
+                    authorityStatement.clearParameters();
+                }
+                authorityStatement.executeBatch();
+            } catch (SQLException e) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                throw new RuntimeException(e);
+            }
+
+            connection.commit();
+            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-
-        String insertAuthoritiesSql = "INSERT INTO authorities (user_id, authority) VALUES ('%s', '%s')";
-
-        final String finalUserId = getUserId(user.getUsername());
-        List<String> sqls = user.getAuthorities()
-                .stream()
-                .map(ae -> ae.getAuthority().name())
-                .map(a -> String.format(insertAuthoritiesSql, finalUserId, a))
-                .toList();
-
-        for (String sql : sqls) {
-            try (Connection connection = ds.getConnection();
-                 Statement statement = connection.createStatement()) {
-                statement.executeUpdate(sql);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
         return executeUpdate;
     }
@@ -105,12 +120,13 @@ public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
     }
 
     @Override
-    public int deleteUser(String username) {
-        String deleteSql = "WITH deleted_user AS (DELETE FROM users WHERE username = ? RETURNING id) " +
-                "DELETE FROM authorities WHERE user_id IN (SELECT id FROM deleted_user)";
+    public int deleteUser(UserEntity user) {
+        String deleteSql = "WITH deleted_user AS (DELETE FROM users WHERE id = ? RETURNING id) " +
+                "DELETE FROM authorities WHERE user_id = ?";
         try (Connection conn = ds.getConnection();
              PreparedStatement statement = conn.prepareStatement(deleteSql)) {
-            statement.setString(1, username);
+            statement.setObject(1, user.getId());
+            statement.setObject(2, user.getId());
             return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

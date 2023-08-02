@@ -10,7 +10,7 @@ public interface NifflerUsersDAO {
 
     int updateUser(UserEntity user);
 
-    int deleteUser(String username);
+    int deleteUser(UserEntity user);
 
     String getUserId(String userName);
 }
