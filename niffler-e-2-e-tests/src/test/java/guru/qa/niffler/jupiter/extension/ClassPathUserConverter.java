@@ -2,7 +2,7 @@ package guru.qa.niffler.jupiter.extension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.qa.niffler.model.UserJson;
-import guru.qa.niffler.uitests.LoginTest;
+import guru.qa.niffler.tests.uitests.LoginTest;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.ArgumentConverter;

@@ -4,8 +4,6 @@ import guru.qa.niffler.db.DataSourceProvider;
 import guru.qa.niffler.db.ServiceDB;
 import guru.qa.niffler.db.entity.AuthorityEntity;
 import guru.qa.niffler.db.entity.UserEntity;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,7 +15,6 @@ import java.util.UUID;
 
 public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
 
-    public static final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     public static final DataSource ds = DataSourceProvider.INSTANCE.getDataSource(ServiceDB.NIFFLER_AUTH);
 
     @Override

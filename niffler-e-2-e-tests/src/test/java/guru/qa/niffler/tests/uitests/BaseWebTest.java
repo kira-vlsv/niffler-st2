@@ -1,4 +1,4 @@
-package guru.qa.niffler.uitests;
+package guru.qa.niffler.tests.uitests;
 
 import com.codeborne.selenide.Configuration;
 import guru.qa.niffler.jupiter.annotation.WebTest;

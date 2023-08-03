@@ -1,4 +1,4 @@
-package guru.qa.niffler.uitests;
+package guru.qa.niffler.tests.uitests;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.annotation.ClassPathUser;

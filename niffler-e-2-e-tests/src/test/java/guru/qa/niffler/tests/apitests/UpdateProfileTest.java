@@ -1,4 +1,4 @@
-package guru.qa.niffler.apitests;
+package guru.qa.niffler.tests.apitests;
 
 import guru.qa.niffler.api.client.UserRestClient;
 import guru.qa.niffler.jupiter.annotation.ClassPathUser;
