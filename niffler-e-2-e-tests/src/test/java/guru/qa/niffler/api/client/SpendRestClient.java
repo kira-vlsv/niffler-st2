@@ -1,7 +1,6 @@
 package guru.qa.niffler.api.client;
 
 import guru.qa.niffler.api.SpendService;
-import guru.qa.niffler.config.Config;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.SpendJson;
 import org.junit.jupiter.api.Assertions;
@@ -14,9 +13,8 @@ public class SpendRestClient extends BaseRestClient {
     private final SpendService spendService = retrofit.create(SpendService.class);
 
     public SpendRestClient() {
-        super(Config.getConfig().getSpendServiceBaseUrl());
+        super(CFG.getSpendServiceBaseUrl());
     }
-
     public @Nonnull SpendJson addSpend(SpendJson spend) {
         try {
             return spendService.addSpend(spend).execute().body();

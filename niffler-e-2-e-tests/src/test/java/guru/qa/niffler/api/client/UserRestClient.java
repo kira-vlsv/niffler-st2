@@ -1,7 +1,6 @@
 package guru.qa.niffler.api.client;
 
 import guru.qa.niffler.api.UserService;
-import guru.qa.niffler.config.Config;
 import guru.qa.niffler.model.UserJson;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,7 +12,7 @@ public class UserRestClient extends BaseRestClient {
     private final UserService userService = retrofit.create(UserService.class);
 
     public UserRestClient() {
-        super(Config.getConfig().getUserServiceBaseUrl());
+        super(CFG.getUserServiceBaseUrl());
     }
 
     public @Nonnull UserJson updateUserInfo(UserJson user) {
