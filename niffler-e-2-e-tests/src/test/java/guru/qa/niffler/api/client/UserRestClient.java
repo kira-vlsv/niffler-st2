@@ -23,4 +23,13 @@ public class UserRestClient extends BaseRestClient {
             return null;
         }
     }
+
+    public @Nonnull UserJson getCurrentUser(String username) {
+        try {
+            return userService.getCurrentUser(username).execute().body();
+        } catch (IOException e) {
+            Assertions.fail("Can't execute api call to niffler-userdata. " + e.getMessage());
+            return null;
+        }
+    }
 }

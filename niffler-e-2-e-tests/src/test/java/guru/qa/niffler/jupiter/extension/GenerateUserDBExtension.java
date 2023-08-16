@@ -6,7 +6,7 @@ import guru.qa.niffler.db.dao.NifflerUsersDAOJdbc;
 import guru.qa.niffler.db.entity.Authority;
 import guru.qa.niffler.db.entity.AuthorityEntity;
 import guru.qa.niffler.db.entity.UserEntity;
-import guru.qa.niffler.jupiter.annotation.GenerateUser;
+import guru.qa.niffler.jupiter.annotation.GenerateUserDB;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -20,20 +20,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class GenerateUserExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback {
+public class GenerateUserDBExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback {
 
     private final NifflerUsersDAO nifflerUsersDAO = new NifflerUsersDAOJdbc();
     private final Faker faker = new Faker();
 
     public static ExtensionContext.Namespace GENERATED_USER_NAMESPACE = ExtensionContext.Namespace
-            .create(GenerateUserExtension.class);
+            .create(GenerateUserDBExtension.class);
 
     @Override
     public void beforeEach(ExtensionContext context) {
         List<UserEntity> userEntities = new ArrayList<>();
         Parameter[] testParameters = context.getRequiredTestMethod().getParameters();
         Parameter[] generateUserAnnotation = Arrays.stream(testParameters)
-                .filter(tp -> tp.isAnnotationPresent(GenerateUser.class))
+                .filter(tp -> tp.isAnnotationPresent(GenerateUserDB.class))
                 .toArray(Parameter[]::new);
         if (Objects.nonNull(generateUserAnnotation)) {
             for (Parameter ignored : generateUserAnnotation) {
@@ -68,7 +68,7 @@ public class GenerateUserExtension implements ParameterResolver, BeforeEachCallb
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return parameterContext.getParameter().isAnnotationPresent(GenerateUser.class) &&
+        return parameterContext.getParameter().isAnnotationPresent(GenerateUserDB.class) &&
                 parameterContext.getParameter().getType().isAssignableFrom(UserEntity.class);
     }
 

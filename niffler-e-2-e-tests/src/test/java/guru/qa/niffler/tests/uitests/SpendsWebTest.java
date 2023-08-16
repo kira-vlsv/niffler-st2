@@ -5,19 +5,18 @@ import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.annotation.ApiLogin;
 import guru.qa.niffler.jupiter.annotation.GenerateCategory;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
-import guru.qa.niffler.jupiter.extension.GenerateCategoryExtension;
+import guru.qa.niffler.jupiter.annotation.GenerateUserAPI;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import io.qameta.allure.AllureId;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static guru.qa.niffler.condition.SpendCondition.spends;
 
-@ExtendWith(GenerateCategoryExtension.class)
 public class SpendsWebTest extends BaseWebTest {
 //    @BeforeEach
 //    void doLogin() {
@@ -55,5 +54,29 @@ public class SpendsWebTest extends BaseWebTest {
         $(".spendings-table tbody")
                 .$$("tr")
                 .shouldHave(CollectionCondition.size(0));
+    }
+
+    @GenerateUserAPI(username = "user04", password = "1234")
+    @GenerateCategory(
+            username = "user04",
+            category = "NewCategory"
+    )
+    @GenerateSpend(
+            username = "user04",
+            description = "Test 3",
+            currency = CurrencyValues.KZT,
+            amount = 6739.90,
+            category = "NewCategory")
+    @ApiLogin(username = "user04", password = "1234")
+    @AllureId("101")
+    @Test
+    void spendShouldBeDisplayedInTable(SpendJson spend) {
+        Selenide.open(CFG.getFrontUrl() + "/main");
+
+        $(".spendings-table tbody").shouldBe(visible)
+                .scrollTo()
+                .$$("tr")
+                .last(1)
+                .shouldHave(spends(spend));
     }
 }

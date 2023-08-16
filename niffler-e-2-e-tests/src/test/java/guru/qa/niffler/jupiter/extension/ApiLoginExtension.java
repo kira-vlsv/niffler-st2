@@ -4,7 +4,6 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import guru.qa.niffler.api.AuthClient;
 import guru.qa.niffler.api.client.AuthRestClient;
-import guru.qa.niffler.api.client.UserRestClient;
 import guru.qa.niffler.api.context.CookieContext;
 import guru.qa.niffler.api.context.SessionContext;
 import guru.qa.niffler.api.util.OauthUtils;
@@ -21,8 +20,6 @@ import java.util.Objects;
 public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecutionCallback {
 
     protected static final Config CFG = Config.getConfig();
-
-    private static final UserRestClient generateUserService = new UserRestClient();
 
     private static final AuthClient authClient = new AuthRestClient();
     private static final String JSESSIONID = "JSESSIONID";

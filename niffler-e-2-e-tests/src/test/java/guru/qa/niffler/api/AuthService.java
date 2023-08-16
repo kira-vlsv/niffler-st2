@@ -24,8 +24,8 @@ public interface AuthService {
     @POST("/login")
     @FormUrlEncoded
     Call<Void> login(
-            @Header("Cookie") String jsessionIdCookie,
-            @Header("Cookie") String xsrfCookie,
+//            @Header("Cookie") String jsessionIdCookie,
+//            @Header("Cookie") String xsrfCookie,
             @Field("_csrf") String xsrf,
             @Field("username") String username,
             @Field("password") String password

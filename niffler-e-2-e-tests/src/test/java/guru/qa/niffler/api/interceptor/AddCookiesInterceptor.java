@@ -33,9 +33,7 @@ public class AddCookiesInterceptor implements Interceptor {
         final Headers headers = builder.build();
 
         return chain.proceed(originalRequest.newBuilder()
-                .method(originalRequest.method(), originalRequest.body())
                 .headers(headers)
-                .url(originalRequest.url())
                 .build());
     }
 }
