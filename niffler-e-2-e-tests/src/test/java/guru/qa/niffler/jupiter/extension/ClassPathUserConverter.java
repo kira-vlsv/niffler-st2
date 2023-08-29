@@ -2,7 +2,6 @@ package guru.qa.niffler.jupiter.extension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.qa.niffler.model.UserJson;
-import guru.qa.niffler.tests.uitests.LoginTest;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.ArgumentConverter;
@@ -12,7 +11,7 @@ import java.io.IOException;
 public class ClassPathUserConverter implements ArgumentConverter {
 
     private static ObjectMapper om = new ObjectMapper();
-    private ClassLoader cl = LoginTest.class.getClassLoader();
+    private ClassLoader cl = ClassPathUserConverter.class.getClassLoader();
 
     @Override
     public UserJson convert(Object source, ParameterContext context) throws ArgumentConversionException {

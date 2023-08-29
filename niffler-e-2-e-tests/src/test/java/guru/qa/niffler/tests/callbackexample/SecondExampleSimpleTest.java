@@ -1,12 +1,7 @@
-package guru.qa.niffler.tests.example;
+package guru.qa.niffler.tests.callbackexample;
 
 import guru.qa.niffler.jupiter.example.CallbackExtension;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @Disabled

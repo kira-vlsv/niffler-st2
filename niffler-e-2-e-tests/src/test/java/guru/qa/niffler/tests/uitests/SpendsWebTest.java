@@ -17,15 +17,10 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static guru.qa.niffler.condition.SpendCondition.spends;
 
+/*
+    In this class tests use @ApiLogin annotation that allows to log in through API
+ */
 public class SpendsWebTest extends BaseWebTest {
-//    @BeforeEach
-//    void doLogin() {
-//        Selenide.open("http://127.0.0.1:3000");
-//        $("a[href*='redirect']").click();
-//        $("input[name='username']").setValue("user1");
-//        $("input[name='password']").setValue("1234");
-//        $("button[type='submit']").click();
-//    }
 
     @GenerateCategory(
             username = "user1",
@@ -56,18 +51,19 @@ public class SpendsWebTest extends BaseWebTest {
                 .shouldHave(CollectionCondition.size(0));
     }
 
-    @GenerateUserAPI(username = "user04", password = "1234")
+    // In this test user is created via API and after test execution deleted direct from DB
+    @GenerateUserAPI(username = "user07", password = "1234")
     @GenerateCategory(
-            username = "user04",
+            username = "user07",
             category = "NewCategory"
     )
     @GenerateSpend(
-            username = "user04",
+            username = "user07",
             description = "Test 3",
             currency = CurrencyValues.KZT,
             amount = 6739.90,
             category = "NewCategory")
-    @ApiLogin(username = "user04", password = "1234")
+    @ApiLogin(username = "user07", password = "1234")
     @AllureId("101")
     @Test
     void spendShouldBeDisplayedInTable(SpendJson spend) {

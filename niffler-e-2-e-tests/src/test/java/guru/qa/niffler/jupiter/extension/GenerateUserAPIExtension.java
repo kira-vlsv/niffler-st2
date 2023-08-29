@@ -8,15 +8,9 @@ import guru.qa.niffler.db.dao.NifflerUsersDAOSpringJdbc;
 import guru.qa.niffler.db.entity.UserEntity;
 import guru.qa.niffler.jupiter.annotation.GenerateUserAPI;
 import guru.qa.niffler.model.UserJson;
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
-import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.jupiter.api.extension.*;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class GenerateUserAPIExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback {
 
@@ -52,9 +46,7 @@ public class GenerateUserAPIExtension implements ParameterResolver, BeforeEachCa
     public void afterEach(ExtensionContext context) {
         UserJson user = context.getStore(GENERATED_USER_NAMESPACE).get(context.getRequiredTestMethod(), UserJson.class);
         if (Objects.nonNull(user)) {
-            UUID id = UUID.fromString(nifflerUsersDAO.getUserId(user.getUsername()));
-            UserEntity userEntity = new UserEntity();
-            userEntity.setId(id);
+            UserEntity userEntity = nifflerUsersDAO.getUser(user.getUsername());
             nifflerUsersDAO.deleteUser(userEntity);
         }
     }

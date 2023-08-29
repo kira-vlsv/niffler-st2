@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class NifflerCurrencyGrpcTest extends BaseGrpcTest {
+class NifflerCurrencyGrpcTest extends BaseGrpcTest {
 
     @Test
     void getAllCurrenciesTest() {

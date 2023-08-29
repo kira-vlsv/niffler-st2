@@ -2,6 +2,7 @@ package guru.qa.niffler.db.dao;
 
 import guru.qa.niffler.db.DataSourceProvider;
 import guru.qa.niffler.db.ServiceDB;
+import guru.qa.niffler.db.entity.Authority;
 import guru.qa.niffler.db.entity.AuthorityEntity;
 import guru.qa.niffler.db.entity.UserEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,10 +12,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class NifflerUsersDAOSpringJdbc implements NifflerUsersDAO {
 
@@ -59,7 +57,31 @@ public class NifflerUsersDAOSpringJdbc implements NifflerUsersDAO {
 
     @Override
     public UserEntity getUser(String username) {
-        return null;
+        UserEntity user = new UserEntity();
+        jdbcTemplate.query("SELECT * FROM users WHERE username = ?;",
+                rs -> {
+                    user.setId((UUID) rs.getObject("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setEnabled(rs.getBoolean("enabled"));
+                    user.setAccountNonExpired(rs.getBoolean("account_non_expired"));
+                    user.setAccountNonLocked(rs.getBoolean("account_non_locked"));
+                    user.setCredentialsNonExpired(rs.getBoolean("credentials_non_expired"));
+                }, username);
+
+        List<AuthorityEntity> authorityEntities = jdbcTemplate.query("SELECT * FROM authorities WHERE user_id= ?;",
+                rs -> {
+                    List<AuthorityEntity> authorities = new ArrayList<>();
+                    while (rs.next()) {
+                        AuthorityEntity authority = new AuthorityEntity();
+                        authority.setAuthority(Authority.valueOf(rs.getString("authority")));
+                        authorities.add(authority);
+                    }
+                    return authorities;
+                },
+                user.getId());
+        user.setAuthorities(authorityEntities);
+        return user;
     }
 
     @Override
@@ -77,8 +99,8 @@ public class NifflerUsersDAOSpringJdbc implements NifflerUsersDAO {
 
     @Override
     public String getUserId(String userName) {
-        return jdbcTemplate.query("SELECT * FROM users WHERE username = ?", // запрос для выполнения
-                rs -> {return rs.getString(1);}, // обработка результата
+        return jdbcTemplate.queryForObject("SELECT id FROM users WHERE username = ?", // запрос для выполнения
+                String.class, // обработка результата
                 userName); // аргументы для подстановки в запрос
     }
 }

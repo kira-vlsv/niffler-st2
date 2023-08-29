@@ -4,7 +4,7 @@ import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.page.RegistrationPage;
 import org.junit.jupiter.api.Test;
 
-public class RegistrationWebTest extends BaseWebTest {
+class RegistrationWebTest extends BaseWebTest {
 
     @Test
     void errorMessageDisplayedWhenPasswordsAreNotEqual() {

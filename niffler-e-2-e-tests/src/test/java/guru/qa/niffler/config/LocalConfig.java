@@ -1,6 +1,20 @@
 package guru.qa.niffler.config;
 
+import com.codeborne.selenide.Configuration;
+
 public class LocalConfig implements Config {
+
+    static final LocalConfig INSTANCE = new LocalConfig();
+
+    static {
+        Configuration.browser = "chrome";
+        Configuration.browserVersion = "116.0";
+        Configuration.browserSize = "1920x1080";
+        Configuration.timeout = 10000;
+    }
+
+    private LocalConfig() {}
+
     @Override
     public String getDBHost() {
         return "localhost";

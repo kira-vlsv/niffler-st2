@@ -13,17 +13,16 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 public abstract class BaseRestClient {
 
     protected static final Config CFG = Config.getConfig();
-
     protected final String serviceBaseUrl;
     protected final OkHttpClient httpClient;
     protected final Retrofit retrofit;
 
     public BaseRestClient(String serviceBaseUrl) {
-        this(serviceBaseUrl, false, null);
+        this(serviceBaseUrl, false, new Interceptor[]{});
     }
 
     public BaseRestClient(String serviceBaseUrl, boolean followRedirect) {
-        this(serviceBaseUrl, followRedirect, null);
+        this(serviceBaseUrl, followRedirect, new Interceptor[]{});
     }
 
     public BaseRestClient(String serviceBaseUrl, boolean followRedirect, Interceptor... interceptors) {

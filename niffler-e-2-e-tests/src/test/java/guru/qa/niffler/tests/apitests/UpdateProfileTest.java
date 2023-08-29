@@ -10,6 +10,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/*
+    This class uses @ClassPathUser annotation to read values from file.
+    Annotation is resolved by ClassPathUserConverter
+ */
+
 public class UpdateProfileTest {
 
     private final UserRestClient userRestClient = new UserRestClient();

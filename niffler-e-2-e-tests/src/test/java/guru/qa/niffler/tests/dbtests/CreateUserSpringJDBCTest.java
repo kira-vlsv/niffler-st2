@@ -12,13 +12,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-public class CreateUserSpringJDBCTets {
+/*
+    This class uses Spring JDBC DAO to create user direct in DB before test and delete it after
+    using DB connection
+ */
 
-    private NifflerUsersDAO usersDAO = new NifflerUsersDAOSpringJdbc();
-    private UserEntity userEntity;
+class CreateUserSpringJDBCTest {
+
+    private final NifflerUsersDAO usersDAO = new NifflerUsersDAOSpringJdbc();
     private final Faker faker = new Faker();
-
     private final String userPassword = faker.internet().password();
+    private UserEntity userEntity;
 
     @BeforeEach
     void createUserForTest() {

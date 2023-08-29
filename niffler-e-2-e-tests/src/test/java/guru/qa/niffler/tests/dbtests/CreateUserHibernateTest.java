@@ -12,13 +12,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-public class CreateUserHibernateTest {
+/*
+    This class uses Hibernate DAO to create user direct in DB before test and delete it after
+    using DB connection
+ */
 
-    private NifflerUsersDAO usersDAO = new NifflerUsersDAOHibernate();
-    private UserEntity userEntity;
+class CreateUserHibernateTest {
+
     private final Faker faker = new Faker();
-
     private final String userPassword = faker.internet().password();
+    private final NifflerUsersDAO usersDAO = new NifflerUsersDAOHibernate();
+    private UserEntity userEntity;
 
     @BeforeEach
     void createUserForTest() {
