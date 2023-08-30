@@ -25,15 +25,15 @@ class NifflerCurrencyGrpcTest extends BaseGrpcTest {
             assertEquals(CurrencyValues.RUB, response.getAllCurrenciesList().get(0).getCurrency());
             assertEquals(0.015, response.getAllCurrenciesList().get(0).getCurrencyRate());
         });
-        step("Verify RUB currency", () -> {
+        step("Verify KZT currency", () -> {
             assertEquals(CurrencyValues.KZT, response.getAllCurrenciesList().get(1).getCurrency());
             assertEquals(0.0021, response.getAllCurrenciesList().get(1).getCurrencyRate());
         });
-        step("Verify RUB currency", () -> {
+        step("Verify EUR currency", () -> {
             assertEquals(CurrencyValues.EUR, response.getAllCurrenciesList().get(2).getCurrency());
             assertEquals(1.08, response.getAllCurrenciesList().get(2).getCurrencyRate());
         });
-        step("Verify RUB currency", () -> {
+        step("Verify USD currency", () -> {
             assertEquals(CurrencyValues.USD, response.getAllCurrenciesList().get(3).getCurrency());
             assertEquals(1.0, response.getAllCurrenciesList().get(3).getCurrencyRate());
         });
