@@ -8,7 +8,7 @@ public class LocalConfig implements Config {
 
     static {
         Configuration.browser = "chrome";
-        Configuration.browserVersion = "116.0";
+        Configuration.browserVersion = "110.0";
         Configuration.browserSize = "1920x1080";
         Configuration.timeout = 10000;
     }

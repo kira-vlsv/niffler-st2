@@ -17,7 +17,7 @@ class LoginTest extends BaseWebTest {
             "testdata/user1.json",
             "testdata/user2.json"
     })
-    @AllureId("103")
+    @AllureId("101")
     @ParameterizedTest
     void loginTest(@ClassPathUser UserJson user) {
 
