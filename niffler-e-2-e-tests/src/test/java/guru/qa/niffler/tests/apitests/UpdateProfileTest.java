@@ -22,7 +22,7 @@ public class UpdateProfileTest {
     @ValueSource(strings = {
             "testdata/user3Update.json"
     })
-    @AllureId("104")
+    @AllureId("102")
     @ParameterizedTest
     public void updateUser(@ClassPathUser UserJson userJson) {
         step("Update user " + userJson.getUsername(), () -> {
