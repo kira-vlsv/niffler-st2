@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/currentUser?username=user1"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"id\": \"229fc371-2821-4795-81a5-0b26d3cd417e\",\"username\": \"user1\",\"firstname\": \"user1\",\"surname\": null, \"currency\": \"RUB\",\"photo\": null}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
