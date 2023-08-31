@@ -9,7 +9,4 @@ public class BaseWebTest {
 
     protected static final Config CFG = Config.getConfig();
 
-    static {
-        Configuration.browserSize = "1920x1080";
-    }
 }

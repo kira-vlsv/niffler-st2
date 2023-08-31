@@ -73,6 +73,6 @@ public class SpendsWebTest extends BaseWebTest {
                 .scrollTo()
                 .$$("tr")
                 .last(1)
-                .shouldHave(spends(spend));
+                .shouldHave(spends(spend)); // Here custom SpendCondition is used
     }
 }

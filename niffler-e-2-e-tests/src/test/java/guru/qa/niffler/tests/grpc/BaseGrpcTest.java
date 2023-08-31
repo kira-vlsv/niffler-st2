@@ -13,14 +13,16 @@ public class BaseGrpcTest {
     protected static final Empty EMPTY = Empty.getDefaultInstance();
     private static final Channel channel;
 
+    // channel that describe where we should 'go'
     static {
         channel = ManagedChannelBuilder
                 .forAddress(CFG.getCurrencyGrpcAddress(), CFG.getCurrencyGrpcPort())
                 .intercept(new AllureGrpc())
-                .usePlaintext()
+                .usePlaintext() // By default, a secure connection mechanism such as TLS will be used.
                 .build();
     }
 
+    // stub to perform requests
     protected final NifflerCurrencyServiceGrpc.NifflerCurrencyServiceBlockingStub currencyStub
             = NifflerCurrencyServiceGrpc.newBlockingStub(channel);
 }
