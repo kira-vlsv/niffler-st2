@@ -1,6 +1,5 @@
 package guru.qa.niffler.jupiter.extension;
 
-import com.github.javafaker.Faker;
 import guru.qa.niffler.db.dao.NifflerUsersDAO;
 import guru.qa.niffler.db.dao.NifflerUsersDAOJdbc;
 import guru.qa.niffler.db.entity.Authority;
@@ -20,11 +19,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static guru.qa.niffler.utils.DataUtils.getRandomPassword;
+import static guru.qa.niffler.utils.DataUtils.getRandomUsername;
+
 public class GenerateUserDBExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback {
 
     private final NifflerUsersDAO nifflerUsersDAO = new NifflerUsersDAOJdbc();
-    private final Faker faker = new Faker();
-
     public static ExtensionContext.Namespace GENERATED_USER_NAMESPACE = ExtensionContext.Namespace
             .create(GenerateUserDBExtension.class);
 
@@ -38,8 +38,8 @@ public class GenerateUserDBExtension implements ParameterResolver, BeforeEachCal
         if (Objects.nonNull(generateUserAnnotation)) {
             for (Parameter ignored : generateUserAnnotation) {
                 UserEntity userEntity = new UserEntity();
-                userEntity.setUsername(faker.name().username());
-                userEntity.setPassword(faker.internet().password());
+                userEntity.setUsername(getRandomUsername());
+                userEntity.setPassword(getRandomPassword());
                 userEntity.setAccountNonExpired(true);
                 userEntity.setEnabled(true);
                 userEntity.setCredentialsNonExpired(true);

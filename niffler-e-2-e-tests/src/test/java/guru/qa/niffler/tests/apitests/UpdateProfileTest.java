@@ -1,6 +1,6 @@
 package guru.qa.niffler.tests.apitests;
 
-import guru.qa.niffler.api.client.UserRestClient;
+import guru.qa.niffler.api.restclient.UserRestClient;
 import guru.qa.niffler.jupiter.annotation.ClassPathUser;
 import guru.qa.niffler.model.UserJson;
 import io.qameta.allure.AllureId;
@@ -11,8 +11,8 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /*
-    This class uses @ClassPathUser annotation to read values from file.
-    Annotation is resolved by ClassPathUserConverter
+ * This class uses @ClassPathUser annotation to read values from file.
+ * Annotation is resolved by ClassPathUserConverter
  */
 
 public class UpdateProfileTest {
@@ -22,7 +22,7 @@ public class UpdateProfileTest {
     @ValueSource(strings = {
             "testdata/user3Update.json"
     })
-    @AllureId("104")
+    @AllureId("107")
     @ParameterizedTest
     public void updateUser(@ClassPathUser UserJson userJson) {
         step("Update user " + userJson.getUsername(), () -> {

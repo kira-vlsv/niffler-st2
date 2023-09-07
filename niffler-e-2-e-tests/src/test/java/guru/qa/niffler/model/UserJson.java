@@ -2,6 +2,9 @@ package guru.qa.niffler.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,6 +27,9 @@ public class UserJson {
     @JsonProperty("friendState")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private FriendState friendState;
+
+    private transient List<CategoryJson> categories = new ArrayList<>();
+    private transient List<SpendJson> spends = new ArrayList<>();
 
     public UserJson() {
     }
@@ -90,6 +96,22 @@ public class UserJson {
 
     public void setFriendState(FriendState friendState) {
         this.friendState = friendState;
+    }
+
+    public List<CategoryJson> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<CategoryJson> categories) {
+        this.categories = categories;
+    }
+
+    public List<SpendJson> getSpends() {
+        return spends;
+    }
+
+    public void setSpends(List<SpendJson> spends) {
+        this.spends = spends;
     }
 
     @Override

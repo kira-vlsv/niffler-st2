@@ -64,7 +64,7 @@ public class SpendsWebTest extends BaseWebTest {
             amount = 6739.90,
             category = "NewCategory")
     @ApiLogin(username = "user07", password = "1234")
-    @AllureId("101")
+    @AllureId("102")
     @Test
     void spendShouldBeDisplayedInTable(SpendJson spend) {
         Selenide.open(CFG.getFrontUrl() + "/main");

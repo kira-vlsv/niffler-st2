@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /*
-    This class uses @GenerateUserDB annotation to create user direct in DB before test and delete it after
-    using JDBC
-    Annotation is resolved by GenerateUserDBExtension
+ * This class uses @GenerateUserDB annotation to create user direct in DB before test
+ * and delete it after using JDBC
+ * Annotation is resolved by GenerateUserDBExtension
  */
 
 @ExtendWith({GenerateUserDBExtension.class})

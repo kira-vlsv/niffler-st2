@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-class LoginTest extends BaseWebTest {
+class LoginWebTest extends BaseWebTest {
 
     @ValueSource(strings = {
             "testdata/user1.json",

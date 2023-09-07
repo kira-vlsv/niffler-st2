@@ -13,4 +13,8 @@ public @interface GenerateUserAPI {
     String username() default "";
 
     String password() default "";
+
+    GenerateCategory[] categories() default {};
+
+    GenerateSpend[] spends() default {};
 }

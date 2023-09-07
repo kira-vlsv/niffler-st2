@@ -18,7 +18,7 @@ import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
 @ExtendWith(UserQueueExtension.class)
 class FriendsWebTest extends BaseWebTest {
 
-    @AllureId("102")
+    @AllureId("106")
     @Test
     void friendsShouldBeVisible(@User(userType = WITH_FRIENDS) UserJson user1,
                                 @User(userType = INVITATION_SENT) UserJson user2,
@@ -33,7 +33,7 @@ class FriendsWebTest extends BaseWebTest {
         System.out.println(user3.getPassword());
     }
 
-    @AllureId("103")
+    @AllureId("105")
     @Test
     void friendsShouldBeVisible01(@User(userType = WITH_FRIENDS) UserJson user1,
                                   @User(userType = INVITATION_SENT) UserJson user2,

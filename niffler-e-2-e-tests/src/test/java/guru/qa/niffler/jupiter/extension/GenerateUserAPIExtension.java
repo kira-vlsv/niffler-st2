@@ -1,44 +1,28 @@
 package guru.qa.niffler.jupiter.extension;
 
-import com.github.javafaker.Faker;
-import guru.qa.niffler.api.client.AuthRestClient;
-import guru.qa.niffler.api.client.UserRestClient;
 import guru.qa.niffler.db.dao.NifflerUsersDAO;
 import guru.qa.niffler.db.dao.NifflerUsersDAOSpringJdbc;
 import guru.qa.niffler.db.entity.UserEntity;
 import guru.qa.niffler.jupiter.annotation.GenerateUserAPI;
 import guru.qa.niffler.model.UserJson;
+import io.qameta.allure.AllureId;
 import org.junit.jupiter.api.extension.*;
 
 import java.util.Objects;
 
 public class GenerateUserAPIExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback {
 
-    private final Faker faker = new Faker();
-
+    private final GenerateUserService generateUserService = new GenerateUserService();
     public static ExtensionContext.Namespace GENERATED_USER_NAMESPACE = ExtensionContext.Namespace
             .create(GenerateUserAPIExtension.class);
-
-    private final AuthRestClient authRestClient = new AuthRestClient();
-    private final UserRestClient userRestClient = new UserRestClient();
     private final NifflerUsersDAO nifflerUsersDAO = new NifflerUsersDAOSpringJdbc();
 
     @Override
     public void beforeEach(ExtensionContext context) {
         GenerateUserAPI generateUserAnnotation = context.getRequiredTestMethod().getAnnotation(GenerateUserAPI.class);
         if (Objects.nonNull(generateUserAnnotation)) {
-            String username;
-            String password;
-            if (Objects.nonNull(generateUserAnnotation.username())
-                    && Objects.nonNull(generateUserAnnotation.password())) {
-                username = generateUserAnnotation.username();
-                password = generateUserAnnotation.password();
-            } else {
-                username = faker.name().username();
-                password = faker.internet().password();
-            }
-            UserJson user = doRegister(username, password);
-            context.getStore(GENERATED_USER_NAMESPACE).put(context.getRequiredTestMethod(), user);
+            context.getStore(GENERATED_USER_NAMESPACE).put(getTestId(context),
+                    generateUserService.generateUser(generateUserAnnotation));
         }
     }
 
@@ -53,18 +37,18 @@ public class GenerateUserAPIExtension implements ParameterResolver, BeforeEachCa
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return parameterContext.getParameter().isAnnotationPresent(GenerateUserAPI.class);
+        return parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return extensionContext.getStore(GENERATED_USER_NAMESPACE).get(extensionContext.getRequiredTestMethod(), UserJson.class);
+        return extensionContext.getStore(GENERATED_USER_NAMESPACE).get(getTestId(extensionContext), UserJson.class);
     }
 
-    private UserJson doRegister(String username, String password) {
-//        authRestClient.getToken();
-        authRestClient.register(username, password);
-        return userRestClient.getCurrentUser(username);
+    private String getTestId(ExtensionContext context) {
+        return Objects
+                .requireNonNull(context.getRequiredTestMethod().getAnnotation(AllureId.class))
+                .value();
     }
 }

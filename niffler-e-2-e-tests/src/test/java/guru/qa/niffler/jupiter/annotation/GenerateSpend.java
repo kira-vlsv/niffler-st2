@@ -12,11 +12,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(ElementType.METHOD)
 public @interface GenerateSpend {
 
-    String username();
+    String username() default "";
 
     String description();
 
-    String category();
+    String category() default "";
 
     double amount();
 
