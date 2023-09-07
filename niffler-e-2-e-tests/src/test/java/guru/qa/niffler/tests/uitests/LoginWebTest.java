@@ -2,16 +2,22 @@ package guru.qa.niffler.tests.uitests;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.annotation.ClassPathUser;
+import guru.qa.niffler.jupiter.extension.BrowserExtension;
 import guru.qa.niffler.model.UserJson;
 import io.qameta.allure.AllureId;
+import io.qameta.allure.junit5.AllureJunit5;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static guru.qa.niffler.tests.uitests.BaseWebTest.CFG;
 
-class LoginWebTest extends BaseWebTest {
+@ExtendWith({AllureJunit5.class,
+        BrowserExtension.class})
+class LoginWebTest {
 
     @ValueSource(strings = {
             "testdata/user1.json",
